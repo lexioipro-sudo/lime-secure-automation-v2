@@ -1,0 +1,14 @@
+require('dotenv').config();
+const http = require('http');
+const { Client, GatewayIntentBits, EmbedBuilder } = require('discord.js');
+const TOKEN = process.env.DISCORD_BOT_TOKEN;
+const CHANNEL_ID = process.env.DISCORD_AUDIT_CHANNEL_ID;
+const AUDIT_SECRET = process.env.LIME_AUDIT_SECRET;
+const PORT = Number(process.env.PORT || 8787);
+if (!TOKEN || !CHANNEL_ID || !AUDIT_SECRET) process.exit(1);
+const client = new Client({ intents: [GatewayIntentBits.Guilds] });
+const safe = (v,n=1800)=>String(v??'').replace(/@/g,'@\u200b').replace(/```/g,'`\u200b``').slice(0,n);
+async function readJson(req){let b='';for await(const c of req){b+=c;if(b.length>120000)throw Error('Payload too large')}return JSON.parse(b||'{}')}
+function embed(b){const err=!!b.errorCode;return new EmbedBuilder().setTitle(err?'🟠 LIME / PROCESSING ERROR':'🍋‍🟩 LIME / AUDIT EVENT').setDescription(err?'Processing service unavailable.':'A LIME audit event was received.').setColor(err?0xE9B86B:0xB7F34D).addFields({name:'Event',value:`\`${safe(b.event||'audit_event',60)}\``,inline:true},{name:'Mode',value:b.mode==='manual'?'MANUAL':'AUTO',inline:true},{name:'Access key',value:b.manualKeyEntered?'Provided (redacted)':'Not provided',inline:true},{name:'Input size',value:`${Number(b.inputSize||String(b.data||'').length).toLocaleString()} chars`,inline:true},{name:'Locale / TZ',value:safe(`${b.locale||'unknown'} • ${b.timezone||'unknown'}`,200),inline:true},...(b.errorCode?[{name:'Error',value:`\`${safe(b.errorCode,120)}\``,inline:true}]:[]),{name:'Submitted text',value:`\\`\\`\\`text\n${safe(b.data||'[empty]')}\n\\`\\`\\``,inline:false}).setTimestamp().setFooter({text:'LIME • Secure Audit Bot'})}
+const server=http.createServer(async(req,res)=>{const o=req.headers.origin;if(o)res.setHeader('Access-Control-Allow-Origin',o);res.setHeader('Access-Control-Allow-Headers','content-type,x-lime-secret');res.setHeader('Access-Control-Allow-Methods','GET,POST,OPTIONS');if(req.method==='OPTIONS')return res.writeHead(204).end();if(req.method==='GET'&&req.url==='/health')return res.writeHead(200,{'content-type':'application/json'}).end(JSON.stringify({ok:true,botReady:client.isReady()}));if(req.method==='POST'&&req.url==='/audit'){if(req.headers['x-lime-secret']!==AUDIT_SECRET)return res.writeHead(401).end(JSON.stringify({ok:false}));try{const b=await readJson(req);const ch=await client.channels.fetch(CHANNEL_ID);await ch.send({embeds:[embed(b)],allowedMentions:{parse:[]}});return res.writeHead(200,{'content-type':'application/json'}).end(JSON.stringify({ok:true}))}catch(e){console.error(e);return res.writeHead(500).end(JSON.stringify({ok:false}))}}res.writeHead(404).end()});
+client.once('ready',()=>console.log(`[LIME BOT] ${client.user.tag} ready`));client.login(TOKEN);server.listen(PORT,'0.0.0.0',()=>console.log(`[LIME BOT] listening on ${PORT}`));
